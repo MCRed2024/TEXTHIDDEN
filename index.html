@@ -37,7 +37,7 @@
         const showButton = document.getElementById('show-button');
         let originalText = '';
 
-        // Event listener to mask/unmask the textarea content
+        // Toggle between hidden (masked) and visible
         showButton.addEventListener('click', function() {
             isHidden = !isHidden;
 
@@ -50,22 +50,22 @@
             }
         });
 
-        // Mask text as dots
+        // Function to mask text with dots
         function maskText() {
-            const maskedText = textarea.value.replace(/./g, '•'); // Replace all characters with dots
+            const maskedText = originalText.replace(/./g, '•'); // Replace all characters with dots
             textarea.value = maskedText;
         }
 
-        // Show original text
+        // Function to show original text
         function showText() {
             textarea.value = originalText;
         }
 
-        // Update the original text and keep masking when typing
+        // Update original text while typing
         textarea.addEventListener('input', function() {
-            originalText = textarea.value; // Keep track of the original text
+            originalText = textarea.value; // Keep the real text intact
             if (isHidden) {
-                maskText(); // Mask the text while typing if it's hidden
+                maskText(); // Mask the text if hidden
             }
         });
 
