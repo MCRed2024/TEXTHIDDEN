@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passcode Text Area</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #code-textarea {
+            font-size: 14px;
+            line-height: 20px;
+            margin: 0;
+            border: 1px solid #bbb;
+            padding: 4px 7px;
+            width: 100%;
+            height: calc(100% - 50px);
+            box-sizing: border-box;
+            resize: none;
+        }
+        #show-button {
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="code-textarea"></textarea>
+    <button id="show-button">Show</button>
+
+    <script>
+        let isHidden = true;
+        const textarea = document.getElementById('code-textarea');
+        const showButton = document.getElementById('show-button');
+        let originalText = '';
+
+        // Event listener to mask/unmask the textarea content
+        showButton.addEventListener('click', function() {
+            isHidden = !isHidden;
+
+            if (isHidden) {
+                maskText();
+                showButton.textContent = 'Show';
+            } else {
+                showText();
+                showButton.textContent = 'Hide';
+            }
+        });
+
+        // Mask text as dots
+        function maskText() {
+            const maskedText = textarea.value.replace(/./g, '•'); // Replace all characters with dots
+            textarea.value = maskedText;
+        }
+
+        // Show original text
+        function showText() {
+            textarea.value = originalText;
+        }
+
+        // Update the original text and keep masking when typing
+        textarea.addEventListener('input', function() {
+            originalText = textarea.value; // Keep track of the original text
+            if (isHidden) {
+                maskText(); // Mask the text while typing if it's hidden
+            }
+        });
+
+    </script>
+</body>
+</html>
