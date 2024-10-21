@@ -25,17 +25,23 @@
             display: block;
             margin: 10px auto;
         }
+        #hidden-textarea {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <textarea id="code-textarea"></textarea>
+    <textarea id="code-textarea" placeholder="Enter passcode"></textarea>
     <button id="show-button">Show</button>
+    
+    <!-- Hidden textarea to store the real value -->
+    <textarea id="hidden-textarea"></textarea>
 
     <script>
         let isHidden = true;
         const textarea = document.getElementById('code-textarea');
+        const hiddenTextarea = document.getElementById('hidden-textarea');
         const showButton = document.getElementById('show-button');
-        let originalText = '';
 
         // Toggle between hidden (masked) and visible
         showButton.addEventListener('click', function() {
@@ -50,22 +56,22 @@
             }
         });
 
-        // Function to mask text with dots
+        // Mask text as dots
         function maskText() {
-            const maskedText = originalText.replace(/./g, '•'); // Replace all characters with dots
+            const maskedText = hiddenTextarea.value.replace(/./g, '•'); // Replace all characters with dots
             textarea.value = maskedText;
         }
 
-        // Function to show original text
+        // Show original text
         function showText() {
-            textarea.value = originalText;
+            textarea.value = hiddenTextarea.value;
         }
 
-        // Update original text while typing
-        textarea.addEventListener('input', function() {
-            originalText = textarea.value; // Keep the real text intact
+        // Update the hidden textarea while typing in the visible textarea
+        textarea.addEventListener('input', function(event) {
+            hiddenTextarea.value = event.target.value; // Keep the real text in hidden textarea
             if (isHidden) {
-                maskText(); // Mask the text if hidden
+                maskText(); // Mask the text while typing if it's hidden
             }
         });
 
